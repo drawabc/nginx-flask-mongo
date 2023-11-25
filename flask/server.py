@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 import os
+import json
 
-from flask import Flask
+from flask import Flask, request
 from pymongo import MongoClient
 
 app = Flask(__name__)
 
 client = MongoClient("mongo:27017")
+db = client.flask_db
+payload = db.payload
 
 @app.route('/')
 def todo():
@@ -17,14 +20,14 @@ def todo():
     return "Hello from the MongoDB client!\n"
 
 
-@app.route('/ganteng', methods=[ 'POST'])
-def ganteng(payload):
-    print(payload)
-    return "OK"
+@app.route('/ganteng', methods=['GET','POST'])
+def ganteng():
+    print(request, flush=True)
+    return "request"
 
 @app.route('/viewganteng')
 def viewganteng():
-    return "ganteng"
+    return "OK"
 
 
 if __name__ == "__main__":
